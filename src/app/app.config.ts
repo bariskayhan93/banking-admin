@@ -1,9 +1,13 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, LOCALE_ID } from '@angular/core';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAuth0, authHttpInterceptorFn } from '@auth0/auth0-angular';
 import { provideRouter } from '@angular/router';
+import { registerLocaleData } from '@angular/common';
+import localeDE from '@angular/common/locales/de';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+
+registerLocaleData(localeDE);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideHttpClient(withInterceptors([authHttpInterceptorFn])),
     provideRouter(routes),
+    { provide: LOCALE_ID, useValue: 'de-DE' },
     provideAuth0({
       domain: environment.auth0.domain,
       clientId: environment.auth0.clientId,

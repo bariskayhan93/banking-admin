@@ -98,13 +98,13 @@
                           <p class="text-muted mb-1">{{ transaction.description }}</p>
                         }
                         <small class="text-muted">
-                          {{ transaction.createdAt | date:'medium' }}
+                          {{ transaction.createdAt | date:'medium':'':'de-DE' }}
                         </small>
                       </div>
                       
                       <div class="text-end">
                         <span class="fs-5 fw-bold">
-                          {{ transaction.amount | currency:'EUR':'symbol':'1.2-2' }}
+                          {{ transaction.amount | currency:'EUR':'symbol':'1.2-2':'de-DE' }}
                         </span>
                       </div>
                     </div>

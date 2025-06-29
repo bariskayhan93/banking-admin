@@ -113,7 +113,7 @@
                 <div class="card border-start-4" 
                      [ngClass]="selectedPersonLoan()!.approved ? 'border-success bg-success-subtle' : 'border-danger bg-danger-subtle'">
                   <div class="card-body text-center">
-                    <div class="fw-bold">€{{ selectedPersonLoan()!.amount | number:'1.2-2' }}</div>
+                    <div class="fw-bold">{{ selectedPersonLoan()!.amount | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</div>
                     <span class="badge" [ngClass]="selectedPersonLoan()!.approved ? 'bg-success' : 'bg-danger'">
                       {{ selectedPersonLoan()!.approved ? 'Approved' : 'Rejected' }}
                     </span>
@@ -147,7 +147,7 @@
                       <h6 class="card-title">{{ getPersonName(potential.personId, persons) }}</h6>
                     }
                     <p class="card-text">
-                      <span class="fw-bold">€{{ potential.amount | number:'1.2-2' }}</span>
+                      <span class="fw-bold">{{ potential.amount | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</span>
                     </p>
                     <span class="badge" [ngClass]="potential.approved ? 'bg-success' : 'bg-danger'">
                       <i class="bi bi-{{ potential.approved ? 'check-circle' : 'x-circle' }} me-1"></i>

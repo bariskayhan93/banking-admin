@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { AsyncPipe, DecimalPipe, NgClass } from '@angular/common';
+import {AsyncPipe, CurrencyPipe, DecimalPipe, NgClass} from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminService } from '../../../services/admin';
 import { PersonService } from '../../../services/person';
@@ -7,7 +7,7 @@ import { SeedStatus, LoanPotential, Person } from '../../../models/admin.model';
 
 @Component({
   selector: 'app-banking-operations',
-  imports: [AsyncPipe, DecimalPipe, NgClass, NgbDropdownModule],
+  imports: [AsyncPipe, DecimalPipe, NgClass, NgbDropdownModule, CurrencyPipe],
   templateUrl: './banking-operations.html',
   styleUrl: './banking-operations.scss'
 })
@@ -21,7 +21,7 @@ export class BankingOperations {
   protected processLoading = signal<number | null>(null);
   protected loanPotentials = signal<LoanPotential[]>([]);
   protected selectedPersonLoan = signal<LoanPotential | null>(null);
-  
+
   protected readonly processIds: (1 | 2 | 3)[] = [1, 2, 3];
 
   protected seedDatabase(): void {

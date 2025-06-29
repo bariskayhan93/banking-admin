@@ -65,7 +65,7 @@
               </div>
               <div class="ms-3">
                 <h6 class="card-title text-muted mb-1">Total Balance</h6>
-                <h3 class="mb-0">{{ stats.totalBalance | currency }}</h3>
+                <h3 class="mb-0">{{ stats.totalBalance | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</h3>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@
                 </span>
               </div>
               @if (status.lastSeeded) {
-                <small class="text-muted">Last seeded: {{ status.lastSeeded | date:'short' }}</small>
+                <small class="text-muted">Last seeded: {{ status.lastSeeded | date:'short':'':'de-DE' }}</small>
               }
             </div>
 
