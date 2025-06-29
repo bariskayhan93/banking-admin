@@ -60,7 +60,7 @@ export interface LoanPotential {
 }
 
 export interface SeedStatus {
-  readonly initialized: boolean;
+  readonly seeded: boolean;
   readonly lastSeeded?: string;
 }
 

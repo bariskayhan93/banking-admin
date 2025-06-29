@@ -33,30 +33,30 @@
   @if (persons.length > 0) {
     <div class="row g-3">
       @for (person of persons; track person.id) {
-        <div class="col-md-6 col-xl-4">
-          <div class="card h-100">
-            <div class="card-body">
+        <div class="col-sm-6 col-lg-4">
+          <div class="card border-0 h-100">
+            <div class="card-body p-3">
               @if (editingPerson()?.id === person.id) {
                 <form [formGroup]="editForm" (ngSubmit)="updatePerson()">
-                  <input type="text" class="form-control mb-3" formControlName="name" required>
+                  <input type="text" class="form-control mb-2" formControlName="name" required>
                   <input type="email" class="form-control mb-3" formControlName="email" required>
-                  <div class="btn-group w-100">
-                    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid || loading()">
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success btn-sm" [disabled]="editForm.invalid || loading()">
                       <i class="bi bi-{{ loading() ? 'arrow-clockwise spin' : 'check' }}"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="cancelEdit()">
                       <i class="bi bi-x"></i>
                     </button>
                   </div>
                 </form>
               } @else {
-                <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex justify-content-between align-items-start mb-2">
                   <div class="flex-grow-1">
-                    <h6 class="card-title">{{ person.name }}</h6>
-                    <p class="card-text text-muted small">{{ person.email }}</p>
+                    <h6 class="mb-1">{{ person.name }}</h6>
+                    <div class="text-muted small">{{ person.email }}</div>
                   </div>
                   <div ngbDropdown>
-                    <button class="btn btn-sm btn-ghost" ngbDropdownToggle>
+                    <button class="btn btn-sm btn-outline-light border-0" ngbDropdownToggle>
                       <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <div ngbDropdownMenu>
@@ -78,14 +78,14 @@
     </div>
   } @else {
     <div class="text-center py-5">
-      <i class="bi bi-people display-1 text-muted"></i>
-      <h4 class="mt-3">Keine Personen</h4>
+      <i class="bi bi-people fs-1 text-muted mb-3"></i>
+      <h4>Keine Personen</h4>
       <p class="text-muted">Fügen Sie Ihre erste Person hinzu, um zu beginnen.</p>
     </div>
   }
 } @else {
   <div class="text-center py-4">
     <div class="spinner-border text-primary"></div>
-    <p class="mt-2 text-muted">Laden...</p>
+    <p class="mt-3 text-muted">Laden...</p>
   </div>
 }

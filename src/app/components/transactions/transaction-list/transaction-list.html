@@ -1,9 +1,9 @@
 <div class="transaction-list">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">
-      <i class="bi bi-arrow-left-right me-2"></i>
-      Transaktionen
-    </h2>
+    <div>
+      <h2 class="mb-1">Transaktionen</h2>
+      <small class="text-muted">Transaktionen verwalten und überwachen</small>
+    </div>
     
     <button class="btn btn-primary" (click)="toggleCreateForm()">
       @if (showCreateForm()) {
@@ -16,13 +16,13 @@
 
   <!-- Create Transaction Form -->
   @if (showCreateForm()) {
-    <div class="card mb-4">
-      <div class="card-body">
-        <h5 class="card-title">Neue Transaktion erstellen</h5>
+    <div class="card border-0 mb-4">
+      <div class="card-body p-3">
+        <h5 class="mb-3">Neue Transaktion erstellen</h5>
         <form [formGroup]="createForm" (ngSubmit)="createTransaction()">
           <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Betrag *</label>
+            <div class="col-sm-6">
+              <label class="form-label small">Betrag *</label>
               <div class="input-group">
                 <span class="input-group-text">€</span>
                 <input type="number" class="form-control" formControlName="amount" 
@@ -30,15 +30,15 @@
               </div>
             </div>
             
-            <div class="col-md-6">
-              <label class="form-label">Beschreibung</label>
+            <div class="col-sm-6">
+              <label class="form-label small">Beschreibung</label>
               <input type="text" class="form-control" formControlName="description" 
                      placeholder="Transaktionsbeschreibung">
             </div>
             
             @if (accounts$ | async; as accounts) {
-              <div class="col-md-6">
-                <label class="form-label">Von Konto</label>
+              <div class="col-sm-6">
+                <label class="form-label small">Von Konto</label>
                 <select class="form-select" formControlName="fromIban">
                   <option value="">Einzahlung (kein Quellkonto)</option>
                   @for (account of accounts; track account.iban) {
@@ -47,8 +47,8 @@
                 </select>
               </div>
               
-              <div class="col-md-6">
-                <label class="form-label">Zu Konto</label>
+              <div class="col-sm-6">
+                <label class="form-label small">Zu Konto</label>
                 <select class="form-select" formControlName="toIban">
                   <option value="">Auszahlung (kein Zielkonto)</option>
                   @for (account of accounts; track account.iban) {
@@ -61,11 +61,11 @@
             <div class="col-12">
               <button type="submit" class="btn btn-primary me-2" [disabled]="createForm.invalid || loading()">
                 @if (loading()) {
-                  <i class="bi bi-arrow-clockwise spin me-1"></i>
+                  <i class="bi bi-arrow-clockwise spin me-2"></i>
                 } @else {
-                  <i class="bi bi-check me-1"></i>
+                  <i class="bi bi-check me-2"></i>
                 }
-                Transaktion erstellen
+                Erstellen
               </button>
               <button type="button" class="btn btn-outline-secondary" (click)="toggleCreateForm()">
                 Abbrechen
@@ -83,44 +83,44 @@
       <div class="row">
         @for (transaction of transactions; track transaction.id) {
           <div class="col-12 mb-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <i class="{{ getTransactionIcon(transaction) }} fs-3"></i>
+            <div class="card border-0">
+              <div class="card-body p-3">
+                <div class="d-flex align-items-start">
+                  <div class="me-3">
+                    <i class="{{ getTransactionIcon(transaction) }} fs-4 text-muted"></i>
                   </div>
                   
-                  <div class="col">
+                  <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start">
                       <div>
                         <h6 class="mb-1">{{ getTransactionLabel(transaction) }}</h6>
                         @if (transaction.description) {
-                          <p class="text-muted mb-1">{{ transaction.description }}</p>
+                          <div class="text-muted small mb-1">{{ transaction.description }}</div>
                         }
                         <small class="text-muted">
-                          {{ transaction.createdAt | date:'medium':'':'de-DE' }}
+                          {{ transaction.createdAt | date:'short':'':'de-DE' }}
                         </small>
                       </div>
                       
                       <div class="text-end">
-                        <span class="fs-5 fw-bold">
+                        <div class="fs-5 fw-bold">
                           {{ transaction.amount | currency:'EUR':'symbol':'1.2-2':'de-DE' }}
-                        </span>
+                        </div>
                       </div>
                     </div>
                     
                     @if (transaction.fromIban || transaction.toIban) {
-                      <div class="mt-2">
+                      <div class="mt-2 small text-muted">
                         @if (transaction.fromIban) {
-                          <div class="d-flex align-items-center text-muted">
-                            <i class="bi bi-arrow-up me-1"></i>
-                            <small>Von: {{ transaction.fromIban }}</small>
+                          <div class="d-flex align-items-center mb-1">
+                            <i class="bi bi-arrow-up me-2"></i>
+                            <span>Von: {{ transaction.fromIban }}</span>
                           </div>
                         }
                         @if (transaction.toIban) {
-                          <div class="d-flex align-items-center text-muted">
-                            <i class="bi bi-arrow-down me-1"></i>
-                            <small>Zu: {{ transaction.toIban }}</small>
+                          <div class="d-flex align-items-center">
+                            <i class="bi bi-arrow-down me-2"></i>
+                            <span>Zu: {{ transaction.toIban }}</span>
                           </div>
                         }
                       </div>
@@ -134,8 +134,8 @@
       </div>
     } @else {
       <div class="text-center py-5">
-        <i class="bi bi-arrow-left-right display-1 text-muted"></i>
-        <h4 class="mt-3">Keine Transaktionen gefunden</h4>
+        <i class="bi bi-arrow-left-right fs-1 text-muted mb-3"></i>
+        <h4>Keine Transaktionen gefunden</h4>
         <p class="text-muted">Erstellen Sie Ihre erste Transaktion, um zu beginnen.</p>
       </div>
     }
@@ -144,7 +144,7 @@
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Laden...</span>
       </div>
-      <p class="mt-3 text-muted">Transaktionen werden geladen...</p>
+      <p class="mt-3 text-muted">Laden...</p>
     </div>
   }
 </div>
