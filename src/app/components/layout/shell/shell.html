@@ -1,0 +1,71 @@
+<div class="admin-shell">
+  <!-- Header -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-bank me-2"></i>
+        Banking Admin
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+              <i class="bi bi-speedometer2 me-1"></i>Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/persons" routerLinkActive="active">
+              <i class="bi bi-people me-1"></i>Persons
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/accounts" routerLinkActive="active">
+              <i class="bi bi-credit-card me-1"></i>Accounts
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/transactions" routerLinkActive="active">
+              <i class="bi bi-arrow-left-right me-1"></i>Transactions
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/operations" routerLinkActive="active">
+              <i class="bi bi-gear me-1"></i>Operations
+            </a>
+          </li>
+        </ul>
+        
+        <div class="navbar-nav">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              @if (userProfile$ | async; as profile) {
+                <img [src]="profile.picture" [alt]="profile.name" class="rounded-circle me-2" width="32" height="32">
+                <span>{{ profile.name }}</span>
+              }
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><h6 class="dropdown-header">Admin Profile</h6></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container-fluid py-4">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
