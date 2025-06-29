@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
-import { authGuardFn } from '@auth0/auth0-angular';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./components/landing/landing').then(c => c.Landing)
+  },
   {
     path: 'auth/callback',
     loadComponent: () => import('./auth/callback/callback').then(c => c.Callback)
@@ -9,28 +13,27 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () => import('./components/dashboard/dashboard').then(c => c.Dashboard),
-    canActivate: [authGuardFn]
+    canActivate: [authGuard]
   },
   {
     path: 'persons',
     loadComponent: () => import('./components/persons/person-list/person-list').then(c => c.PersonList),
-    canActivate: [authGuardFn]
+    canActivate: [authGuard]
   },
   {
     path: 'accounts',
     loadComponent: () => import('./components/accounts/account-list/account-list').then(c => c.AccountList),
-    canActivate: [authGuardFn]
+    canActivate: [authGuard]
   },
   {
     path: 'transactions',
     loadComponent: () => import('./components/transactions/transaction-list/transaction-list').then(c => c.TransactionList),
-    canActivate: [authGuardFn]
+    canActivate: [authGuard]
   },
   {
     path: 'operations',
     loadComponent: () => import('./components/operations/banking-operations/banking-operations').then(c => c.BankingOperations),
-    canActivate: [authGuardFn]
+    canActivate: [authGuard]
   },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: '/dashboard' }
+  { path: '**', redirectTo: '/' }
 ];

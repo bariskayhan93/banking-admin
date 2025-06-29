@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, shareReplay} from 'rxjs';
 import { ApiService } from './api';
 import { Person as PersonModel, CreatePersonRequest, UpdatePersonRequest } from '../models/admin.model';
 
@@ -10,7 +10,7 @@ export class PersonService {
   private api = inject(ApiService);
 
   getPersons(): Observable<PersonModel[]> {
-    return this.api.get<PersonModel[]>('/persons');
+    return this.api.get<PersonModel[]>('/persons').pipe(shareReplay(1));
   }
 
   getPerson(id: string): Observable<PersonModel> {

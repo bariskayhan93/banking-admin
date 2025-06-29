@@ -18,10 +18,9 @@ export interface UpdatePersonRequest {
 
 export interface BankAccount {
   readonly iban: string;
+  readonly bankName: string;
   readonly balance: number;
-  readonly personId: string;
-  readonly createdAt: string;
-  readonly updatedAt: string;
+  readonly person: Person;
 }
 
 export interface CreateBankAccountRequest {
@@ -46,6 +45,12 @@ export interface CreateTransactionRequest {
 
 export interface ProcessRequest {
   readonly processId: 1 | 2 | 3;
+}
+
+export interface ProcessResponse {
+  readonly success: boolean;
+  readonly message: string;
+  readonly data?: LoanPotential[];
 }
 
 export interface LoanPotential {

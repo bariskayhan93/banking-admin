@@ -82,12 +82,18 @@
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 0.5rem;
+  
+  i {
+    color: #667eea;
+    margin-right: 0.5rem;
+  }
 }
 
 .login-subtitle {
   color: #6b7280;
   margin-bottom: 2rem;
   font-size: 1rem;
+  line-height: 1.5;
 }
 
 // Button styles

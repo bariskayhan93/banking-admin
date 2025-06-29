@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
-import { Auth } from '../../../auth/auth';
+import { AuthService } from '@auth0/auth0-angular';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell',
@@ -10,11 +11,30 @@ import { Auth } from '../../../auth/auth';
   styleUrl: './shell.scss'
 })
 export class Shell {
-  private auth = inject(Auth);
+  private auth = inject(AuthService);
+  protected showLogoutConfirm = signal(false);
   
-  protected userProfile$ = this.auth.userProfile$;
+  protected userProfile$ = this.auth.user$.pipe(
+    map(user => ({
+      name: user?.name || '',
+      email: user?.email || '',
+      picture: user?.picture || '',
+      role: 'admin' as const
+    }))
+  );
+  
+  protected confirmLogout(): void {
+    this.showLogoutConfirm.set(true);
+  }
   
   protected logout(): void {
-    this.auth.logout();
+    this.showLogoutConfirm.set(false);
+    this.auth.logout({
+      logoutParams: { returnTo: window.location.origin }
+    });
+  }
+  
+  protected cancelLogout(): void {
+    this.showLogoutConfirm.set(false);
   }
 }

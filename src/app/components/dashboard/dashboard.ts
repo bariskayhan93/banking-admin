@@ -1,8 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { AdminService } from '../../services/admin';
+import { PersonService } from '../../services/person';
+import { AccountService } from '../../services/account';
+import { TransactionService } from '../../services/transaction';
 import { SeedStatus } from '../../models/admin.model';
 
 @Component({
@@ -13,6 +16,9 @@ import { SeedStatus } from '../../models/admin.model';
 })
 export class Dashboard implements OnInit {
   private adminService = inject(AdminService);
+  private personService = inject(PersonService);
+  private accountService = inject(AccountService);
+  private transactionService = inject(TransactionService);
   private router = inject(Router);
 
   protected stats$!: Observable<{
@@ -28,7 +34,19 @@ export class Dashboard implements OnInit {
   }
 
   private loadData(): void {
-    this.stats$ = this.adminService.getDashboardStats();
+    this.stats$ = combineLatest([
+      this.personService.getPersons(),
+      this.accountService.getAccounts(),
+      this.transactionService.getTransactions()
+    ]).pipe(
+      map(([persons, accounts, transactions]) => ({
+        totalPersons: persons.length,
+        totalAccounts: accounts.length,
+        totalTransactions: transactions.length,
+        totalBalance: accounts.reduce((sum, account) => sum + account.balance, 0)
+      }))
+    );
+    
     this.seedStatus$ = this.adminService.getSeedStatus();
   }
 

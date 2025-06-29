@@ -54,7 +54,26 @@
               <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
               <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#" (click)="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+              @if (!showLogoutConfirm()) {
+                <li><a class="dropdown-item" href="#" (click)="confirmLogout()">
+                  <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a></li>
+              } @else {
+                <li class="dropdown-item-text">
+                  <div class="text-center py-2">
+                    <small class="text-muted">Confirm logout?</small>
+                    <div class="mt-2">
+                      <button class="btn btn-sm btn-outline-danger me-2" (click)="logout()">
+                        <i class="bi bi-check me-1"></i>
+                        Yes
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary" (click)="cancelLogout()">
+                        <i class="bi bi-x me-1"></i>Cancel
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              }
             </ul>
           </div>
         </div>

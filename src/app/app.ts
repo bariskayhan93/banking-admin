@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from '@auth0/auth0-angular';
 import { Shell } from './components/layout/shell/shell';
 import { AsyncPipe } from '@angular/common';
-import { catchError, of } from 'rxjs';
+import { AuthService } from '@auth0/auth0-angular';
+import { combineLatest, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,33 +13,26 @@ import { catchError, of } from 'rxjs';
 })
 export class App {
   private auth = inject(AuthService);
-  private hasError = signal(false);
 
-  protected isLoading$ = this.auth.isLoading$;
-  
-  protected isAuthenticated$ = this.auth.isAuthenticated$.pipe(
-    catchError(() => {
-      this.hasError.set(true);
-      return of(false);
-    })
+  protected authState$ = combineLatest([
+    this.auth.isLoading$.pipe(startWith(true)),
+    this.auth.isAuthenticated$.pipe(startWith(false)),
+    this.auth.error$.pipe(startWith(null))
+  ]).pipe(
+    map(([isLoading, isAuthenticated, error]) => ({
+      isLoading,
+      isAuthenticated,
+      error
+    }))
   );
 
-  protected authError$ = this.hasError.asReadonly();
-
   protected login(): void {
-    this.hasError.set(false);
     this.auth.loginWithRedirect({
-      appState: { target: this.getIntendedRoute() }
+      appState: { target: '/dashboard' }
     });
   }
 
   protected retryAuth(): void {
-    this.hasError.set(false);
     window.location.reload();
-  }
-
-  private getIntendedRoute(): string {
-    const path = window.location.pathname;
-    return path === '/auth/callback' ? '/dashboard' : path;
   }
 }

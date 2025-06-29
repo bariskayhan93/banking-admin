@@ -1,1 +1,115 @@
-<p>account-list works!</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">
+    <i class="bi bi-credit-card me-2"></i>Bank Accounts
+  </h2>
+  
+  @if (persons$ | async; as persons) {
+    <div ngbDropdown>
+      <button class="btn btn-outline-secondary" ngbDropdownToggle>
+        <i class="bi bi-funnel me-1"></i>
+        @if (selectedPersonId()) {
+          @for (person of persons; track person.id) {
+            @if (person.id === selectedPersonId()) {
+              {{ person.name }}
+            }
+          }
+        } @else {
+          Filter by Person
+        }
+      </button>
+      <div ngbDropdownMenu>
+        <button class="dropdown-item" (click)="clearFilter()">
+          <i class="bi bi-x me-2"></i>All Accounts
+        </button>
+        <div class="dropdown-divider"></div>
+        @for (person of persons; track person.id) {
+          <button class="dropdown-item" (click)="filterByPerson(person.id)">
+            {{ person.name }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+@if (persons$ | async; as persons) {
+  <div class="card mb-4">
+    <div class="card-body">
+      <form [formGroup]="createForm" (ngSubmit)="createAccount()" class="row g-3">
+        <div class="col-md-8">
+          <select class="form-select" formControlName="personId" required>
+            <option value="">Select Person</option>
+            @for (person of persons; track person.id) {
+              <option [value]="person.id">{{ person.name }} ({{ person.email }})</option>
+            }
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-success" [disabled]="createForm.invalid || loading()">
+            <i class="bi bi-{{ loading() ? 'arrow-clockwise spin' : 'plus' }} me-1"></i>
+            Create Account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+@if (filteredAccounts$ | async; as accounts) {
+  @if (accounts.length > 0) {
+    <div class="row g-3">
+      @for (account of accounts; track account.iban) {
+        <div class="col-md-6 col-xl-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="flex-grow-1">
+                  <h6 class="card-title mb-1">{{ account.iban }}</h6>
+                  <p class="card-text text-muted small mb-1">{{ account.bankName }}</p>
+                </div>
+                <div ngbDropdown>
+                  <button class="btn btn-sm btn-ghost" ngbDropdownToggle>
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button class="dropdown-item text-danger" (click)="deleteAccount(account.iban)">
+                      <i class="bi bi-trash me-2"></i>Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <p class="card-text text-muted mb-1">
+                  <i class="bi bi-person me-1"></i>{{ account.person.name }}
+                </p>
+                <small class="text-muted">{{ account.person.email }}</small>
+              </div>
+              
+              <div class="text-center">
+                <span class="fs-4 fw-bold text-success">
+                  {{ account.balance | currency:'EUR':'symbol':'1.2-2' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="text-center py-5">
+      <i class="bi bi-credit-card display-1 text-muted"></i>
+      <h4 class="mt-3">No Accounts</h4>
+      @if (selectedPersonId()) {
+        <p class="text-muted">No accounts found for the selected person.</p>
+      } @else {
+        <p class="text-muted">Create your first bank account to get started.</p>
+      }
+    </div>
+  }
+} @else {
+  <div class="text-center py-4">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Loading...</p>
+  </div>
+}

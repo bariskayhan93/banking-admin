@@ -1,50 +1,41 @@
-@if (isLoading$ | async) {
-  <div class="loading-container">
-    <div class="loading-content">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+@if (authState$ | async; as state) {
+  @if (state.isLoading) {
+    <div class="loading-container">
+      <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h3 class="mt-3">Loading Banking Admin...</h3>
+        <p class="text-muted">Please wait while we verify your authentication.</p>
       </div>
-      <h3 class="mt-3">Loading Banking Admin...</h3>
-      <p class="text-muted">Please wait while we verify your authentication.</p>
     </div>
-  </div>
-} @else if (isAuthenticated$ | async) {
-  <app-shell>
+  } @else if (state.isAuthenticated) {
+    <app-shell>
+      <router-outlet />
+    </app-shell>
+  } @else if (state.error) {
+    <div class="error-container">
+      <div class="error-card">
+        <div class="error-content">
+          <div class="error-icon">
+            <i class="bi bi-exclamation-triangle"></i>
+          </div>
+          <h3 class="error-title">Authentication Error</h3>
+          <p class="error-message">{{ state.error.message || 'Failed to authenticate. Please try again.' }}</p>
+          <div class="error-actions">
+            <button (click)="retryAuth()" class="btn btn-primary">
+              <i class="bi bi-arrow-clockwise me-2"></i>
+              Try Again
+            </button>
+            <button (click)="login()" class="btn btn-outline-primary ms-2">
+              <i class="bi bi-box-arrow-in-right me-2"></i>
+              Login
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
     <router-outlet />
-  </app-shell>
-} @else if (authError$()) {
-  <div class="error-container">
-    <div class="error-card">
-      <div class="error-content">
-        <div class="error-icon">
-          <i class="bi bi-exclamation-triangle"></i>
-        </div>
-        <h3 class="error-title">Authentication Error</h3>
-        <p class="error-message">Failed to authenticate. Please try again.</p>
-        <div class="error-actions">
-          <button (click)="retryAuth()" class="btn btn-primary">
-            <i class="bi bi-arrow-clockwise me-2"></i>
-            Try Again
-          </button>
-          <button (click)="login()" class="btn btn-outline-primary ms-2">
-            <i class="bi bi-box-arrow-in-right me-2"></i>
-            Login
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-} @else {
-  <div class="login-container">
-    <div class="login-card">
-      <div class="login-content">
-        <h1 class="login-title">Banking Admin</h1>
-        <p class="login-subtitle">Secure banking administration portal</p>
-        <button (click)="login()" class="btn btn-primary btn-lg">
-          <i class="bi bi-box-arrow-in-right me-2"></i>
-          Login with Auth0
-        </button>
-      </div>
-    </div>
-  </div>
+  }
 }

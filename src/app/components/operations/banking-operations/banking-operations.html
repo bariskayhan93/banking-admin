@@ -1,1 +1,165 @@
-<p>banking-operations works!</p>
+<div class="mb-4">
+  <h2 class="mb-0">
+    <i class="bi bi-gear me-2"></i>Banking Operations
+  </h2>
+  <p class="text-muted">System administration and banking process management</p>
+</div>
+
+<div class="row g-4">
+  <!-- System Operations -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="bi bi-database me-2"></i>System Operations
+        </h5>
+      </div>
+      <div class="card-body">
+        @if (seedStatus$ | async; as status) {
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="mb-1">Database Seed Status</h6>
+              @if (status.initialized) {
+                <p class="text-success mb-0">
+                  <i class="bi bi-check-circle me-1"></i>Initialized
+                  @if (status.lastSeeded) {
+                    <small class="text-muted ms-2">Last seeded: {{ status.lastSeeded }}</small>
+                  }
+                </p>
+              } @else {
+                <p class="text-warning mb-0">
+                  <i class="bi bi-exclamation-triangle me-1"></i>Not initialized
+                </p>
+              }
+            </div>
+            <button class="btn btn-primary" (click)="seedDatabase()" [disabled]="loading()">
+              <i class="bi bi-{{ loading() ? 'arrow-clockwise spin' : 'database' }} me-1"></i>
+              Seed Database
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Banking Processes -->
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="bi bi-cpu me-2"></i>Banking Processes
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-4">
+          Execute banking processes. Higher IDs include lower ones automatically.
+        </p>
+        
+        <div class="row g-3">
+          @for (processId of processIds; track processId) {
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body text-center">
+                  <div class="mb-3">
+                    <span class="badge bg-primary fs-6">Process {{ processId }}</span>
+                  </div>
+                  <p class="card-text">{{ getProcessDescription(processId) }}</p>
+                  <button 
+                    class="btn btn-outline-primary w-100" 
+                    (click)="executeProcess(processId)" 
+                    [disabled]="processLoading() !== null">
+                    @if (processLoading() === processId) {
+                      <i class="bi bi-arrow-clockwise spin me-1"></i>Processing...
+                    } @else {
+                      <i class="bi bi-play me-1"></i>Execute
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Individual Loan Potential Lookup -->
+  @if (persons$ | async; as persons) {
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-person-check me-2"></i>Individual Loan Potential
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3 align-items-end">
+            <div class="col-md-8">
+              <div ngbDropdown>
+                <button class="btn btn-outline-secondary w-100" ngbDropdownToggle>
+                  <i class="bi bi-person me-1"></i>Select Person
+                </button>
+                <div ngbDropdownMenu class="w-100">
+                  @for (person of persons; track person.id) {
+                    <button class="dropdown-item" (click)="getLoanPotentialForPerson(person.id)">
+                      {{ person.name }} ({{ person.email }})
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              @if (selectedPersonLoan()) {
+                <div class="card border-start-4" 
+                     [ngClass]="selectedPersonLoan()!.approved ? 'border-success bg-success-subtle' : 'border-danger bg-danger-subtle'">
+                  <div class="card-body text-center">
+                    <div class="fw-bold">€{{ selectedPersonLoan()!.amount | number:'1.2-2' }}</div>
+                    <span class="badge" [ngClass]="selectedPersonLoan()!.approved ? 'bg-success' : 'bg-danger'">
+                      {{ selectedPersonLoan()!.approved ? 'Approved' : 'Rejected' }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Loan Potentials Results -->
+  @if (loanPotentials().length > 0) {
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-chart-bar me-2"></i>All Loan Potentials
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            @for (potential of loanPotentials(); track potential.personId) {
+              <div class="col-md-6 col-xl-4">
+                <div class="card border-start-4" 
+                     [ngClass]="potential.approved ? 'border-success bg-success-subtle' : 'border-danger bg-danger-subtle'">
+                  <div class="card-body">
+                    @if (persons$ | async; as persons) {
+                      <h6 class="card-title">{{ getPersonName(potential.personId, persons) }}</h6>
+                    }
+                    <p class="card-text">
+                      <span class="fw-bold">€{{ potential.amount | number:'1.2-2' }}</span>
+                    </p>
+                    <span class="badge" [ngClass]="potential.approved ? 'bg-success' : 'bg-danger'">
+                      <i class="bi bi-{{ potential.approved ? 'check-circle' : 'x-circle' }} me-1"></i>
+                      {{ potential.approved ? 'Approved' : 'Rejected' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
