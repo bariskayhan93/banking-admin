@@ -1,166 +1,164 @@
-<div class="dashboard">
+<div class="row mb-4">
+  <div class="col-12">
+    <h1 class="h3 mb-3">Banking Administration</h1>
+    <p class="text-muted">Übersicht Ihres Banking-Systems</p>
+  </div>
+</div>
+
+@if (stats$ | async; as stats) {
   <div class="row mb-4">
-    <div class="col-12">
-      <h1 class="h3 mb-3">Banking Admin Dashboard</h1>
-      <p class="text-muted">Overview of your banking system</p>
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon bg-primary">
+              <i class="bi bi-people"></i>
+            </div>
+            <div class="ms-3">
+              <h6 class="text-muted mb-1">Personen</h6>
+              <h3 class="mb-0">{{ stats.totalPersons }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon bg-success">
+              <i class="bi bi-credit-card"></i>
+            </div>
+            <div class="ms-3">
+              <h6 class="text-muted mb-1">Konten</h6>
+              <h3 class="mb-0">{{ stats.totalAccounts }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon bg-info">
+              <i class="bi bi-arrow-left-right"></i>
+            </div>
+            <div class="ms-3">
+              <h6 class="text-muted mb-1">Transaktionen</h6>
+              <h3 class="mb-0">{{ stats.totalTransactions }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="stat-icon bg-warning">
+              <i class="bi bi-currency-euro"></i>
+            </div>
+            <div class="ms-3">
+              <h6 class="text-muted mb-1">Gesamtsaldo</h6>
+              <h3 class="mb-0">{{ stats.totalBalance | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="row">
+  <div class="col-md-8 mb-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white py-3">
+        <h5 class="mb-0">Schnellzugriff</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="action-card" (click)="navigateTo('/persons')">
+              <div class="action-icon bg-primary">
+                <i class="bi bi-person-plus"></i>
+              </div>
+              <div class="action-content">
+                <h6 class="mb-1">Personen verwalten</h6>
+                <p class="text-muted mb-0">Personen hinzufügen, bearbeiten oder anzeigen</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="action-card" (click)="navigateTo('/accounts')">
+              <div class="action-icon bg-success">
+                <i class="bi bi-plus-circle"></i>
+              </div>
+              <div class="action-content">
+                <h6 class="mb-1">Bankkonten</h6>
+                <p class="text-muted mb-0">Konten erstellen und verwalten</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="action-card" (click)="navigateTo('/transactions')">
+              <div class="action-icon bg-info">
+                <i class="bi bi-arrow-down-up"></i>
+              </div>
+              <div class="action-content">
+                <h6 class="mb-1">Transaktionen</h6>
+                <p class="text-muted mb-0">Transaktionen verarbeiten und anzeigen</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <div class="action-card" (click)="navigateTo('/operations')">
+              <div class="action-icon bg-warning">
+                <i class="bi bi-gear"></i>
+              </div>
+              <div class="action-content">
+                <h6 class="mb-1">Operationen</h6>
+                <p class="text-muted mb-0">Banking-Operationen und -Prozesse</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  @if (stats$ | async; as stats) {
-    <div class="row mb-4">
-      <div class="col-md-3 mb-3">
-        <div class="card stat-card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="stat-icon bg-primary">
-                <i class="bi bi-people"></i>
-              </div>
-              <div class="ms-3">
-                <h6 class="card-title text-muted mb-1">Total Persons</h6>
-                <h3 class="mb-0">{{ stats.totalPersons }}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-4 mb-4">
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white py-3">
+        <h5 class="mb-0">Systemstatus</h5>
       </div>
-
-      <div class="col-md-3 mb-3">
-        <div class="card stat-card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="stat-icon bg-success">
-                <i class="bi bi-credit-card"></i>
-              </div>
-              <div class="ms-3">
-                <h6 class="card-title text-muted mb-1">Bank Accounts</h6>
-                <h3 class="mb-0">{{ stats.totalAccounts }}</h3>
-              </div>
+      <div class="card-body">
+        @if (seedStatus$ | async; as status) {
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Datenbank-Seed</span>
+              <span class="badge" [class]="status.initialized ? 'bg-success' : 'bg-warning'">
+                {{ status.initialized ? 'Initialisiert' : 'Nicht initialisiert' }}
+              </span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <div class="card stat-card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="stat-icon bg-info">
-                <i class="bi bi-arrow-left-right"></i>
-              </div>
-              <div class="ms-3">
-                <h6 class="card-title text-muted mb-1">Transactions</h6>
-                <h3 class="mb-0">{{ stats.totalTransactions }}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-3 mb-3">
-        <div class="card stat-card border-0 shadow-sm">
-          <div class="card-body">
-            <div class="d-flex align-items-center">
-              <div class="stat-icon bg-warning">
-                <i class="bi bi-currency-dollar"></i>
-              </div>
-              <div class="ms-3">
-                <h6 class="card-title text-muted mb-1">Total Balance</h6>
-                <h3 class="mb-0">{{ stats.totalBalance | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
-
-  <div class="row">
-    <div class="col-md-8 mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white py-3">
-          <h5 class="card-title mb-0">Quick Actions</h5>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <div class="action-card" (click)="navigateTo('/persons')">
-                <div class="action-icon bg-primary">
-                  <i class="bi bi-person-plus"></i>
-                </div>
-                <div class="action-content">
-                  <h6 class="mb-1">Manage Persons</h6>
-                  <p class="text-muted mb-0">Add, edit, or view person records</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <div class="action-card" (click)="navigateTo('/accounts')">
-                <div class="action-icon bg-success">
-                  <i class="bi bi-plus-circle"></i>
-                </div>
-                <div class="action-content">
-                  <h6 class="mb-1">Bank Accounts</h6>
-                  <p class="text-muted mb-0">Create and manage bank accounts</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <div class="action-card" (click)="navigateTo('/transactions')">
-                <div class="action-icon bg-info">
-                  <i class="bi bi-arrow-down-up"></i>
-                </div>
-                <div class="action-content">
-                  <h6 class="mb-1">Transactions</h6>
-                  <p class="text-muted mb-0">Process and view transactions</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <div class="action-card" (click)="navigateTo('/operations')">
-                <div class="action-icon bg-warning">
-                  <i class="bi bi-gear"></i>
-                </div>
-                <div class="action-content">
-                  <h6 class="mb-1">Operations</h6>
-                  <p class="text-muted mb-0">Banking operations and processes</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white py-3">
-          <h5 class="card-title mb-0">System Status</h5>
-        </div>
-        <div class="card-body">
-          @if (seedStatus$ | async; as status) {
-            <div class="status-item mb-3">
-              <div class="d-flex justify-content-between align-items-center">
-                <span>Database Seed</span>
-                <span class="badge" [class]="status.initialized ? 'bg-success' : 'bg-warning'">
-                  {{ status.initialized ? 'Initialized' : 'Not Initialized' }}
-                </span>
-              </div>
-              @if (status.lastSeeded) {
-                <small class="text-muted">Last seeded: {{ status.lastSeeded | date:'short':'':'de-DE' }}</small>
-              }
-            </div>
-
-            @if (!status.initialized) {
-              <button class="btn btn-primary btn-sm" (click)="initializeSeed()">
-                <i class="bi bi-database-up me-1"></i>
-                Initialize Database
-              </button>
+            @if (status.lastSeeded) {
+              <small class="text-muted">Zuletzt geseeded: {{ status.lastSeeded | date:'short':'':'de-DE' }}</small>
             }
+          </div>
+
+          @if (!status.initialized) {
+            <button class="btn btn-primary btn-sm" (click)="initializeSeed()">
+              <i class="bi bi-database-up me-1"></i>
+              Datenbank initialisieren
+            </button>
           }
-        </div>
+        }
       </div>
     </div>
   </div>

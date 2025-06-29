@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
-import {AsyncPipe, CurrencyPipe, DecimalPipe, NgClass} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, DatePipe, NgClass} from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminService } from '../../../services/admin';
 import { PersonService } from '../../../services/person';
-import { SeedStatus, LoanPotential, Person } from '../../../models/admin.model';
+import { LoanPotential, Person } from '../../../models/admin.model';
 
 @Component({
   selector: 'app-banking-operations',
-  imports: [AsyncPipe, DecimalPipe, NgClass, NgbDropdownModule, CurrencyPipe],
+  imports: [AsyncPipe, NgClass, NgbDropdownModule, CurrencyPipe, DatePipe],
   templateUrl: './banking-operations.html',
   styleUrl: './banking-operations.scss'
 })
@@ -63,15 +63,15 @@ export class BankingOperations {
   }
 
   protected getPersonName(personId: string, persons: Person[]): string {
-    return persons?.find(p => p.id === personId)?.name || 'Unknown';
+    return persons?.find(p => p.id === personId)?.name || 'Unbekannt';
   }
 
   protected getProcessDescription(processId: number): string {
     switch (processId) {
-      case 1: return 'Update account balances';
-      case 2: return 'Calculate net worths and friend recommendations';
-      case 3: return 'Calculate loan potentials (includes 1 & 2)';
-      default: return 'Unknown process';
+      case 1: return 'Kontostände aktualisieren';
+      case 2: return 'Nettovermögen und Freundschaftsempfehlungen berechnen';
+      case 3: return 'Kreditpotentiale berechnen (inkl. 1 & 2)';
+      default: return 'Unbekannter Prozess';
     }
   }
 }

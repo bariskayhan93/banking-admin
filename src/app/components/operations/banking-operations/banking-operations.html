@@ -1,8 +1,8 @@
 <div class="mb-4">
   <h2 class="mb-0">
-    <i class="bi bi-gear me-2"></i>Banking Operations
+    <i class="bi bi-gear me-2"></i>Banking-Operationen
   </h2>
-  <p class="text-muted">System administration and banking process management</p>
+  <p class="text-muted">Übersicht der System- und Banking-Prozessverwaltung</p>
 </div>
 
 <div class="row g-4">
@@ -11,30 +11,30 @@
     <div class="card">
       <div class="card-header">
         <h5 class="mb-0">
-          <i class="bi bi-database me-2"></i>System Operations
+          <i class="bi bi-database me-2"></i>System-Operationen
         </h5>
       </div>
       <div class="card-body">
         @if (seedStatus$ | async; as status) {
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h6 class="mb-1">Database Seed Status</h6>
+              <h6 class="mb-1">Datenbank-Initialisierungsstatus</h6>
               @if (status.initialized) {
                 <p class="text-success mb-0">
-                  <i class="bi bi-check-circle me-1"></i>Initialized
+                  <i class="bi bi-check-circle me-1"></i>Initialisiert
                   @if (status.lastSeeded) {
-                    <small class="text-muted ms-2">Last seeded: {{ status.lastSeeded }}</small>
+                    <small class="text-muted ms-2">Zuletzt initialisiert: {{ status.lastSeeded | date:'short':'':'de-DE' }}</small>
                   }
                 </p>
               } @else {
                 <p class="text-warning mb-0">
-                  <i class="bi bi-exclamation-triangle me-1"></i>Not initialized
+                  <i class="bi bi-exclamation-triangle me-1"></i>Nicht initialisiert
                 </p>
               }
             </div>
             <button class="btn btn-primary" (click)="seedDatabase()" [disabled]="loading()">
               <i class="bi bi-{{ loading() ? 'arrow-clockwise spin' : 'database' }} me-1"></i>
-              Seed Database
+              Datenbank initialisieren
             </button>
           </div>
         }
@@ -47,12 +47,12 @@
     <div class="card">
       <div class="card-header">
         <h5 class="mb-0">
-          <i class="bi bi-cpu me-2"></i>Banking Processes
+          <i class="bi bi-cpu me-2"></i>Banking-Prozesse
         </h5>
       </div>
       <div class="card-body">
         <p class="text-muted mb-4">
-          Execute banking processes. Higher IDs include lower ones automatically.
+          Banking-Prozesse ausführen. Höhere IDs enthalten niedrigere automatisch.
         </p>
         
         <div class="row g-3">
@@ -61,7 +61,7 @@
               <div class="card h-100">
                 <div class="card-body text-center">
                   <div class="mb-3">
-                    <span class="badge bg-primary fs-6">Process {{ processId }}</span>
+                    <span class="badge bg-primary fs-6">Prozess {{ processId }}</span>
                   </div>
                   <p class="card-text">{{ getProcessDescription(processId) }}</p>
                   <button 
@@ -69,9 +69,9 @@
                     (click)="executeProcess(processId)" 
                     [disabled]="processLoading() !== null">
                     @if (processLoading() === processId) {
-                      <i class="bi bi-arrow-clockwise spin me-1"></i>Processing...
+                      <i class="bi bi-arrow-clockwise spin me-1"></i>Verarbeitung...
                     } @else {
-                      <i class="bi bi-play me-1"></i>Execute
+                      <i class="bi bi-play me-1"></i>Ausführen
                     }
                   </button>
                 </div>
@@ -89,7 +89,7 @@
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">
-            <i class="bi bi-person-check me-2"></i>Individual Loan Potential
+            <i class="bi bi-person-check me-2"></i>Individuelles Kreditpotential
           </h5>
         </div>
         <div class="card-body">
@@ -97,7 +97,7 @@
             <div class="col-md-8">
               <div ngbDropdown>
                 <button class="btn btn-outline-secondary w-100" ngbDropdownToggle>
-                  <i class="bi bi-person me-1"></i>Select Person
+                  <i class="bi bi-person me-1"></i>Person auswählen
                 </button>
                 <div ngbDropdownMenu class="w-100">
                   @for (person of persons; track person.id) {
@@ -115,7 +115,7 @@
                   <div class="card-body text-center">
                     <div class="fw-bold">{{ selectedPersonLoan()!.amount | currency:'EUR':'symbol':'1.2-2':'de-DE' }}</div>
                     <span class="badge" [ngClass]="selectedPersonLoan()!.approved ? 'bg-success' : 'bg-danger'">
-                      {{ selectedPersonLoan()!.approved ? 'Approved' : 'Rejected' }}
+                      {{ selectedPersonLoan()!.approved ? 'Genehmigt' : 'Abgelehnt' }}
                     </span>
                   </div>
                 </div>
@@ -133,7 +133,7 @@
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">
-            <i class="bi bi-chart-bar me-2"></i>All Loan Potentials
+            <i class="bi bi-chart-bar me-2"></i>Alle Kreditpotentiale
           </h5>
         </div>
         <div class="card-body">
@@ -151,7 +151,7 @@
                     </p>
                     <span class="badge" [ngClass]="potential.approved ? 'bg-success' : 'bg-danger'">
                       <i class="bi bi-{{ potential.approved ? 'check-circle' : 'x-circle' }} me-1"></i>
-                      {{ potential.approved ? 'Approved' : 'Rejected' }}
+                      {{ potential.approved ? 'Genehmigt' : 'Abgelehnt' }}
                     </span>
                   </div>
                 </div>
