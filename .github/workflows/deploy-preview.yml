@@ -17,9 +17,17 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
+          # Clone or update repository
+          if [ ! -d "/var/www/banking-admin-preview/.git" ]; then
+            sudo rm -rf /var/www/banking-admin-preview
+            sudo git clone https://github.com/${{ github.repository }}.git /var/www/banking-admin-preview
+          else
+            cd /var/www/banking-admin-preview
+            git pull origin main
+          fi
+          
           cd /var/www/banking-admin-preview
-          git pull origin main
-          npm ci
+          npm install
           npm run build:preview
           sudo cp -r dist/banking-admin/* ./
           sudo chown -R www-data:www-data /var/www/banking-admin-preview
