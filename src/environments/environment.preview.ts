@@ -1,16 +1,16 @@
 export const environment = {
   production: false,
-  name: 'local',
-  apiBaseUrl: 'http://localhost:3000',
+  name: 'preview',
+  apiBaseUrl: 'https://banking-api-preview.bariskayhan.com',
   auth0: {
     domain: 'banking-system-dev.eu.auth0.com',
     clientId: 'ejRXRs1jNCrJgVZR6VvKRMjDhdAhsbT6',
     audience: 'https://banking-api.bariskayhan.com',
-    redirectUri: 'http://localhost:4201/auth/callback'
+    redirectUri: 'https://banking-admin-preview.bariskayhan.com/auth/callback'
   },
   features: {
     enableDebugLogs: true,
     enableAnalytics: false,
-    enableErrorReporting: false
+    enableErrorReporting: true
   }
 };
