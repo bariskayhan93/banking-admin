@@ -5,7 +5,7 @@ IMAGE_NAME="banking-admin-preview"
 CONTAINER_NAME="banking-admin-preview"
 SERVER_IP="217.154.87.47"
 
-echo "Building Docker image..."
+echo "Building Docker image...."
 docker build -t $IMAGE_NAME .
 
 echo "Saving image to tar..."
