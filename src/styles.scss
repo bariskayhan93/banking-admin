@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles - Banking Admin */
+
+:root {
+  --bs-primary: #1e40af;
+  --bs-primary-rgb: 30, 64, 175;
+  --bs-secondary: #64748b;
+  --bs-secondary-rgb: 100, 116, 139;
+  --bs-success: #059669;
+  --bs-danger: #dc2626;
+  --bs-warning: #d97706;
+  --bs-info: #0891b2;
+  --bs-light: #f8fafc;
+  --bs-dark: #0f172a;
+  
+  --banking-accent: #3b82f6;
+  --banking-text: #334155;
+  --banking-border: #e2e8f0;
+  --banking-bg: #f8fafc;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--banking-text);
+  background-color: var(--banking-bg);
+  line-height: 1.5;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--banking-accent);
+  outline-offset: 2px;
+}

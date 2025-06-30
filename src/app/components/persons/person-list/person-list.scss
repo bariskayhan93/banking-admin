@@ -1,16 +1,25 @@
-.card {
-  transition: all 0.2s ease;
+.create-form-card {
+  border: 1px solid var(--banking-border);
+}
 
+.person-card {
+  transition: all 0.15s ease;
+  border: 1px solid var(--banking-border);
+  
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.25rem 0.75rem rgba(var(--bs-primary-rgb), 0.1);
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
   }
 }
 
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.person-table {
+  border: 1px solid var(--banking-border);
+  
+  tbody tr {
+    transition: background-color 0.15s ease;
+    
+    &:hover {
+      background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+  }
 }

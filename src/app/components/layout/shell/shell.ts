@@ -2,16 +2,18 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
+import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterLink, RouterLinkActive, AsyncPipe],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, NgbOffcanvasModule],
   templateUrl: './shell.html',
   styleUrl: './shell.scss'
 })
 export class Shell {
   private auth = inject(AuthService);
+  private offcanvas = inject(NgbOffcanvas);
   protected showLogoutConfirm = signal(false);
   
   protected userProfile$ = this.auth.user$.pipe(
@@ -36,5 +38,11 @@ export class Shell {
   
   protected cancelLogout(): void {
     this.showLogoutConfirm.set(false);
+  }
+  
+  protected toggleMobileNav(): void {
+    import('./mobile-nav/mobile-nav').then(({ MobileNavComponent }) => {
+      this.offcanvas.open(MobileNavComponent, { position: 'start' });
+    });
   }
 }

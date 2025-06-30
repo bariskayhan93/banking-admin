@@ -1,38 +1,28 @@
-.admin-shell {
-  min-height: 100vh;
+.sidebar {
+  width: 15rem;
+  min-width: 15rem;
+  max-width: 15rem;
+  min-height: calc(100vh - 3.5rem);
+  flex-shrink: 0;
 }
 
-.navbar {
-  .nav-link {
-    transition: all 0.2s ease;
-    
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    &.active {
-      background: rgba(255, 255, 255, 0.2);
-      font-weight: 600;
-    }
+.nav-link {
+  padding: 0.75rem 1rem;
+  color: var(--bs-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  margin-bottom: 0.25rem;
+  transition: all 0.15s ease;
+  
+  &:hover {
+    color: var(--bs-dark);
+    background-color: var(--bs-light);
   }
-}
-
-.main-content {
-  background: #f8f9fa;
-  flex: 1;
-}
-
-.dropdown-menu {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  margin-top: 8px;
-}
-
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  
+  &.active {
+    color: var(--bs-primary);
+    font-weight: 600;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+  }
 }

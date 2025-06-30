@@ -1,9 +1,23 @@
-.card {
-  transition: all 0.2s ease;
+.create-form-card {
+  border: 1px solid var(--banking-border);
+}
 
+.account-card {
+  transition: all 0.15s ease;
+  border: 1px solid var(--banking-border);
+  
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.25rem 0.75rem rgba(var(--bs-primary-rgb), 0.1);
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
+    transform: translateY(-1px);
   }
+}
+
+.balance-highlight {
+  background: linear-gradient(135deg, var(--bs-success) 0%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .spin {
