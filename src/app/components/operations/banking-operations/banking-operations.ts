@@ -1,65 +1,62 @@
-import { Component, inject, signal } from '@angular/core';
-import {AsyncPipe, CurrencyPipe, DatePipe, NgClass} from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { AdminService } from '../../../services/admin';
+import { BehaviorSubject, switchMap, finalize, catchError, EMPTY } from 'rxjs';
 import { PersonService } from '../../../services/person';
+import { AdminService } from '../../../services/admin';
 import { LoanPotential, Person } from '../../../models/admin.model';
 
 @Component({
   selector: 'app-banking-operations',
-  imports: [AsyncPipe, NgClass, NgbDropdownModule, CurrencyPipe, DatePipe],
+  imports: [AsyncPipe, CurrencyPipe, DatePipe, NgbDropdownModule],
   templateUrl: './banking-operations.html',
   styleUrl: './banking-operations.scss'
 })
 export class BankingOperations {
-  private adminService = inject(AdminService);
   private personService = inject(PersonService);
+  private adminService = inject(AdminService);
 
-  protected seedStatus$ = this.adminService.getSeedStatus();
   protected persons$ = this.personService.getPersons();
-  protected loading = signal(false);
-  protected processLoading = signal<number | null>(null);
-  protected loanPotentials = signal<LoanPotential[]>([]);
-  protected selectedPersonLoan = signal<LoanPotential | null>(null);
+  protected seedStatus$ = this.adminService.getSeedStatus();
+  
+  protected processLoading$ = new BehaviorSubject<number | null>(null);
+  protected seedLoading$ = new BehaviorSubject(false);
+  protected loanPotentials$ = new BehaviorSubject<LoanPotential[]>([]);
+  protected selectedPersonLoan$ = new BehaviorSubject<LoanPotential | null>(null);
+  protected selectedPersonLoading$ = new BehaviorSubject(false);
 
   protected readonly processIds: (1 | 2 | 3)[] = [1, 2, 3];
 
-  protected seedDatabase(): void {
-    this.loading.set(true);
-    this.adminService.initializeSeed().subscribe({
-      next: () => {
-        this.loading.set(false);
-        this.seedStatus$ = this.adminService.getSeedStatus();
-      },
-      error: () => this.loading.set(false)
+  protected executeProcess(processId: 1 | 2 | 3): void {
+    this.processLoading$.next(processId);
+    this.adminService.executeProcess({ processId }).pipe(
+      finalize(() => this.processLoading$.next(null)),
+      catchError(() => EMPTY)
+    ).subscribe(response => {
+      if (processId === 3 && response.data) {
+        this.loanPotentials$.next(response.data as LoanPotential[]);
+      }
+      if (processId === 2) {
+        this.persons$ = this.personService.getPersons();
+      }
     });
   }
 
-  protected executeProcess(processId: 1 | 2 | 3): void {
-    this.processLoading.set(processId);
-    this.adminService.executeProcess({ processId }).subscribe({
-      next: (response) => {
-        this.processLoading.set(null);
-        if (processId === 3 && response.data) {
-          this.loanPotentials.set(response.data);
-        }
-        if (processId === 2) {
-          this.persons$ = this.personService.getPersons();
-        }
-      },
-      error: () => this.processLoading.set(null)
-    });
+  protected seedDatabase(): void {
+    this.seedLoading$.next(true);
+    this.adminService.initializeSeed().pipe(
+      switchMap(() => this.adminService.getSeedStatus()),
+      finalize(() => this.seedLoading$.next(false)),
+      catchError(() => EMPTY)
+    ).subscribe(() => this.seedStatus$ = this.adminService.getSeedStatus());
   }
 
   protected getLoanPotentialForPerson(personId: string): void {
-    this.loading.set(true);
-    this.adminService.getLoanPotentialForPerson(personId).subscribe({
-      next: (loanPotential) => {
-        this.loading.set(false);
-        this.selectedPersonLoan.set(loanPotential);
-      },
-      error: () => this.loading.set(false)
-    });
+    this.selectedPersonLoading$.next(true);
+    this.adminService.getLoanPotentialForPerson(personId).pipe(
+      finalize(() => this.selectedPersonLoading$.next(false)),
+      catchError(() => EMPTY)
+    ).subscribe(loanPotential => this.selectedPersonLoan$.next(loanPotential));
   }
 
   protected getPersonName(personId: string, persons: Person[]): string {
@@ -67,11 +64,11 @@ export class BankingOperations {
   }
 
   protected getProcessDescription(processId: number): string {
-    switch (processId) {
-      case 1: return 'Kontostände aktualisieren';
-      case 2: return 'Nettovermögen und Freundschaftsempfehlungen berechnen';
-      case 3: return 'Kreditpotentiale berechnen (inkl. 1 & 2)';
-      default: return 'Unbekannter Prozess';
-    }
+    const descriptions = {
+      1: 'Kontostände aktualisieren',
+      2: 'Nettovermögen und Freundschaftsempfehlungen berechnen', 
+      3: 'Kreditpotentiale berechnen (inkl. 1 & 2)'
+    };
+    return descriptions[processId as keyof typeof descriptions] || 'Unbekannter Prozess';
   }
 }

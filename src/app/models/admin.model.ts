@@ -54,9 +54,17 @@ export interface ProcessResponse {
 }
 
 export interface LoanPotential {
-  readonly personId: string;
-  readonly amount: number;
-  readonly approved: boolean;
+  personId: string;
+  personNetWorth: number;
+  maxLoanAmount: number;
+  friendContributions: Array<{
+    friendId: string;
+    friendName: string;
+    friendNetWorth: number;
+    maxLoanFromFriend: number;
+    lendingPercentage: number;
+  }>;
+  calculationMethod: string;
 }
 
 export interface SeedStatus {
