@@ -27,6 +27,10 @@ jobs:
           fi
           
           cd /var/www/banking-admin-preview
+          
+          # Clean previous build
+          rm -rf dist/ node_modules/
+          
           npm install
           npm run build:preview
           sudo cp -r dist/banking-admin/* ./
