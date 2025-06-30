@@ -2,13 +2,13 @@ name: Deploy Banking Admin Preview
 
 on:
   push:
-    branches: [main]
+    branches: [preview]
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
@@ -25,12 +25,12 @@ jobs:
             cd /var/www/banking-admin-preview
             git pull origin main
           fi
-          
+
           cd /var/www/banking-admin-preview
-          
+
           # Clean previous build
           rm -rf dist/ node_modules/
-          
+
           npm install
           npm run build:preview
           sudo cp -r dist/banking-admin/* ./
