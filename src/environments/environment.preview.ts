@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   name: 'preview',
-  apiBaseUrl: 'https://banking-api-preview.bariskayhan.com',
+  apiBaseUrl: 'https://banking-api.bariskayhan.com',
   auth0: {
     domain: 'banking-system-dev.eu.auth0.com',
     clientId: 'ejRXRs1jNCrJgVZR6VvKRMjDhdAhsbT6',
